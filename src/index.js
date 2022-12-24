@@ -32,14 +32,38 @@ function dogTable(dog){
     tr.appendChild(td3)
     tr.appendChild(td4)
     td4.addEventListener('click',()=>{
-        console.log('editbtn')
-        console.log(`Name: ${name} Breed: ${breed} Sex: ${sex}`)
+        //console.log('editbtn')
+        //console.log(`Name: ${name} Breed: ${breed} Sex: ${sex}`)
         const input = document.querySelectorAll('input')
         input[0].value = dog.name
         input[1].value = dog.breed
         input[2].value = dog.sex
 
-        console.log(input)
+        const form = document.getElementById('dog-form')
+        form.addEventListener('submit',(e)=>{
+            
+            e.preventDefault()
+            const update = {
+                name:input[0].value,
+                breed:input[1].value,
+                sex:input[2].value
+            }
+            console.log(input[0].value)
+            console.log(input[1].value)
+            console.log(input[2].value)
+            
+    fetch(`http://localhost:3000/dogs/${dog.id}`,{
+        method: 'PATCH',
+        body: JSON.stringify(update),
+        headers: {
+            'Content-type': 'application/json',
+        }
+    }).then(res=>res.json())
+    .then(data=>console.log(data))
+
+
+            
+        })
 
     })
 })
